@@ -1,0 +1,21 @@
+
+@TODO : Les derniers problèmes présent dans lootin.gg !
+
+Priorité 2 :
+- Vérifier la sécurité (en back), que si un utilisateur n'a pas l'argent, il ne peuvent pas passer commande.
+- Quelques problèmes liés au responsive
+- Vérifier l'UX et l'onboarding.
+- Vérifier toutes les maths de pourcentage d'évolution.
+- En terme de design : Il y a des bugs d'affichage avec d'autres navigateurs (Vu sur mozzila par ex).
+- Faire un affichage mobile plus UI
+- Vérifier qu'on puisse pas faire d'appel uniquement via requetes POST (sans front)
+
+Crons à faire :
+- Lorsque la date du private sale est passé, faire que ca passe automatiquement en public sale
+- Lorsque les 30 jours apres la public sale est passé, faire que ca passe automatiquement le isSalable a true
+- Tous les orderbooks qui sont en statut pending passe en annulés au bout de 10min
+
+A refaire :
+- Les fees, calculés depuis le backoffice en + du front.
+
+- Refaire tout le backoffice admin
