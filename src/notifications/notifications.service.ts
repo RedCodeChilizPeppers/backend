@@ -65,7 +65,7 @@ export class NotificationsService {
 
 	async remove(id: string) {
 		const deletedNotif = await this.notificationModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deletedNotif;
 	}

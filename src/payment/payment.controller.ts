@@ -53,7 +53,7 @@ export class PaymentController {
 	@Post('webhookdeposit')
 	async webhookDepositStripe(@Headers() headers, @RawBody() rawBody) {
 		const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-			apiVersion: '2022-08-01',
+			apiVersion: '2025-06-30.basil',
 		});
 		const endpointSecret = process.env.STRIPE_ENDPOINT_DEPOSIT_SECRET;
 		const sig = headers['stripe-signature'];
@@ -107,7 +107,7 @@ export class PaymentController {
 	@Post('webhook')
 	async webhookStripe(@Headers() headers, @RawBody() rawBody) {
 		const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-			apiVersion: '2022-08-01',
+			apiVersion: '2025-06-30.basil',
 		});
 		// If you are testing your webhook locally with the Stripe CLI you
 		// can find the endpoint's secret by running `stripe listen`
@@ -166,7 +166,7 @@ export class PaymentController {
 										{
 											userId: sellerId,
 											transactionId:
-												transaction._id.string(),
+												transaction._id.toString(),
 											txLocked: true,
 										},
 									);
@@ -181,7 +181,7 @@ export class PaymentController {
 										seller,
 									);
 									await this.orderbookService.update(
-										order._id,
+										order._id.toString(),
 										{
 											status: 'selled',
 										},
@@ -328,11 +328,11 @@ export class PaymentController {
 							const orders =
 								await this.orderbookService.findAllWithFilter({
 									userId: sellerId,
-									transactionId: transaction._id.string(),
+									transactionId: transaction._id.toString(),
 									txLocked: true,
 								});
 							for (const order of orders) {
-								await this.orderbookService.update(order._id, {
+								await this.orderbookService.update(order._id.toString(), {
 									txLocked: false,
 								});
 							}
@@ -363,7 +363,7 @@ export class PaymentController {
 			console.log("from admin en haut: ", from);
 
 			const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-				apiVersion: '2022-08-01',
+				apiVersion: '2025-06-30.basil',
 			});
 			const talent: Talent = await this.talentService.findOneByNickname(
 				body.price_data.product_data.name.split(' ')[0],
@@ -453,7 +453,7 @@ export class PaymentController {
 					cancel_url: `https://preprod.lootin.gg/payment/canceled`,
 				});
 
-				this.transactionService.update(transaction._id, {
+				this.transactionService.update(transaction._id.toString(), {
 					transacId: session.id,
 					os: 'stripe',
 					product: body.price_data.product_data.name,
@@ -631,7 +631,7 @@ export class PaymentController {
 			// 	(parseFloat(body.price_data.unit_amount) * 100 * 5) / 100;
 			// const price = parseFloat(body.price_data.unit_amount) * 100 + fee;
 			const transfertByWallet = await this.transactionService.update(
-				transaction._id,
+				transaction._id.toString(),
 				{
 					transacId: uuidv4(),
 					os: 'wallet',
@@ -716,7 +716,7 @@ for (let i = 0; i < orderSelect.length; i++) {
 			// L'ordre a été entièrement vendu, on met à jour le statut de l'order book
 			// console.log("on arrive ici OKLM");
 			
-			await this.orderbookService.update(order._id, {
+			await this.orderbookService.update(order._id.toString(), {
 				status: 'selled',
 				numberToken: quantityToSell,
 			});
@@ -808,7 +808,7 @@ for (let i = 0; i < orderSelect.length; i++) {
 
 		} else {
 			// On met à jour le statut de l'ordre actuel pour indiquer qu'il a été partiellement vendu
-			await this.orderbookService.update(order._id, {
+			await this.orderbookService.update(order._id.toString(), {
 				numberToken: quantityToSell,
 				status: 'selled',
 			});
@@ -932,7 +932,7 @@ for (let i = 0; i < orderSelect.length; i++) {
 
 	} else {
 			console.log("order transféré", order);
-			await this.orderbookService.update(order._id, {
+			await this.orderbookService.update(order._id.toString(), {
 				txLocked: true,
 				transactionId: transaction._id.toString(),
 			});

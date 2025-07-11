@@ -215,11 +215,11 @@ export class UserService {
 	}
 
 	findAllandCount() {
-		return this.userModel.count();
+		return this.userModel.countDocuments();
 	}
 
 	count() {
-		return this.userModel.count();
+		return this.userModel.countDocuments();
 	}
 	
 

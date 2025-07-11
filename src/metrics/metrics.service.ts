@@ -34,7 +34,7 @@ export class MetricsService {
 
 	async remove(id: string) {
 		const deletedCat = await this.metricModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deletedCat;
 	}

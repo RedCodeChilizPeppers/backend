@@ -42,7 +42,7 @@ export class OrderbookService {
 		return this.orderbookModel.find({ filter }).exec();
 	}
 	count(filter: any = {}) {
-		return this.orderbookModel.count(filter).exec();
+		return this.orderbookModel.countDocuments(filter).exec();
 	}
 
 	findOne(id: number) {

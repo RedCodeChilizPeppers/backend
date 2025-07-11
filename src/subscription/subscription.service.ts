@@ -38,7 +38,7 @@ export class SubscriptionService {
 
 	async remove(id: string) {
 		const deletedSub = await this.subscriptionModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deletedSub;
 	}

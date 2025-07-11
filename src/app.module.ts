@@ -28,8 +28,8 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { OrderbookModule } from './orderbook/orderbook.module';
 import { WaitingListModule } from './waiting-list/waitingList.module';
 import { HealthModule } from './health/health.module';
-import { S3Service } from './s3/s3.service';
-import { S3Module } from './s3/s3.module';
+// import { S3Service } from './s3/s3.service';
+// import { S3Module } from './s3/s3.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -81,7 +81,7 @@ import * as Joi from 'joi';
 		OrderbookModule,
 		WaitingListModule,
 		HealthModule,
-		S3Module,
+		// S3Module,
 	],
 	controllers: [AppController],
 	providers: [
@@ -92,7 +92,7 @@ import * as Joi from 'joi';
 			useClass: JwtAuthGuard,
 		},
 		AppService,
-		S3Service,
+		// S3Service,
 	],
 })
 export class AppModule {}

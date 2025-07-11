@@ -33,7 +33,7 @@ export class GamesService {
 
 	async remove(id: string) {
 		const deleteGame = await this.gameModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deleteGame;
 	}

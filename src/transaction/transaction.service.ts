@@ -75,7 +75,7 @@ export class TransactionService {
 
 	async remove(id: string) {
 		const deletedTrans = await this.transactionModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deletedTrans;
 	}

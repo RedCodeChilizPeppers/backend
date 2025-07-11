@@ -31,16 +31,16 @@ export class TokenPriceHistoryController {
 		const talents = await this.talentsService.findAll();
 		for (const talent of talents) {
 			await this.tokenPriceHistoryService.create({
-			  talent: talent._id,
+			  talent: talent,
 			  price: talent.price,
 			  currency: talent.currency,
 			});
 			// Si il n'y a pas d'ordre de vente créer en cours sur le site.
-			const OrdreDeVenteEnCours = await this.orderbookService.findAllByTalentId(talent._id,10,{status: "pending"})
+			const OrdreDeVenteEnCours = await this.orderbookService.findAllByTalentId(talent._id.toString(),10,{status: "pending"})
 			if (OrdreDeVenteEnCours.length === 0) {
 				if (talent.isSalable == true) {
 					// On vérifie qu'il reste des tokens à disposition
-					const LTTLeft = await this.talentsService.getLTTLeft(talent._id);
+					const LTTLeft = await this.talentsService.getLTTLeft(talent._id.toString());
 					const LTTCheckLeft = LTTLeft.snapshotBlockchain[0].sellActually;
 					// On génere un nombre aléatoire de LTT qui vont etre créer compris entre 10 et 30.
 					const getRandomNumber = Math.floor(Math.random() * 29) + 2;
@@ -49,7 +49,7 @@ export class TokenPriceHistoryController {
 						// On créer un orderbook en tant qu'admin au dernier prix
 						const formData = {
 							userId : process.env.ID_ADMIN,
-							talent : talent._id,
+							talent : talent,
 							method : "sell",
 							price : talent.price,
 							numberToken : getRandomNumber,

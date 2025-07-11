@@ -52,7 +52,7 @@ export class TokenPriceHistoryService {
 
 	async remove(id: string) {
 		const deletedTPH = await this.tokenPriceHistoryModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deletedTPH;
 	}

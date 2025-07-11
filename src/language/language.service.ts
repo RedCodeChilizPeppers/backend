@@ -34,7 +34,7 @@ export class LanguageService {
 
 	async remove(id: string) {
 		const deletedLang = await this.languageModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deletedLang;
 	}

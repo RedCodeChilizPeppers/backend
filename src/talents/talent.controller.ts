@@ -19,7 +19,7 @@ import { CheckPolicies } from 'src/decorators/check-policies.decorator';
 import { ActionEnum } from 'src/enums/action.enum';
 import { Talent } from './schemas/talent.schema';
 import { TokenPriceHistory } from 'src/token-price-history/schemas/token-price-history.schema';
-import { S3Service } from 'src/s3/s3.service';
+// import { S3Service } from 'src/s3/s3.service';
 import { OrderbookService } from 'src/orderbook/orderbook.service';
 import * as moment from 'moment';
 import { UserService } from 'src/user/user.service';
@@ -32,7 +32,7 @@ export class TalentsController {
 		private readonly talentsService: TalentsService,
 		private readonly tokenPriceHistoryService: TokenPriceHistoryService,
 		private readonly orderbookService: OrderbookService,
-		private readonly s3Service: S3Service,
+		// private readonly s3Service: S3Service,
 		private readonly userService: UserService,
 	) {}
 
@@ -41,20 +41,20 @@ export class TalentsController {
 	@CheckPolicies((ability: AppAbility) => ability.can(ActionEnum.MANAGE))
 	@Post('create')
 	async create(@Body() createTalentDto: CreateTalentDto) {
-		if (createTalentDto.image.slice(0, 4) === 'data') {
-			const base64 = createTalentDto.image.split(',')[1];
-			const type = createTalentDto.image.split(';')[0].split(':')[1];
-			const nameFile = `${createTalentDto.nickname}_avatar`;
-			const buffer = Buffer.from(base64, 'base64');
-			const s3file = await this.s3Service.s3Upload(
-				buffer,
-				'media-front/avatar',
-				nameFile,
-				type,
-			);
-			console.log(s3file);
-			createTalentDto.image = nameFile;
-		}
+		// if (createTalentDto.image.slice(0, 4) === 'data') {
+		// 	const base64 = createTalentDto.image.split(',')[1];
+		// 	const type = createTalentDto.image.split(';')[0].split(':')[1];
+		// 	const nameFile = `${createTalentDto.nickname}_avatar`;
+		// 	const buffer = Buffer.from(base64, 'base64');
+		// 	const s3file = await this.s3Service.s3Upload(
+		// 		buffer,
+		// 		'media-front/avatar',
+		// 		nameFile,
+		// 		type,
+		// 	);
+		// 	console.log(s3file);
+		// 	createTalentDto.image = nameFile;
+		// }
 		return this.talentsService.create(createTalentDto);
 	}
 
@@ -84,20 +84,20 @@ export class TalentsController {
 			talentsWithPrice.push({
 				talent: talent,
 				prices: await this.tokenPriceHistoryService.findAllByTalent(
-					talent._id,
+					talent._id.toString(),
 				),
 			});
 			
-			try {
-				const s3Avatar = await this.s3Service.s3GetObject(
-					`avatar/${talent.image}`,
-					'media-front',
-				);
-				const base64 = s3Avatar.Body.toString('base64');
-				talent.image = `data:${s3Avatar.ContentType};base64,${base64}`;
-			} catch (error) {
-				// this.logger.debug(`TalentsController findAll:  ${error}`);
-			}
+			// try {
+			// 	const s3Avatar = await this.s3Service.s3GetObject(
+			// 		`avatar/${talent.image}`,
+			// 		'media-front',
+			// 	);
+			// 	const base64 = s3Avatar.Body.toString('base64');
+			// 	talent.image = `data:${s3Avatar.ContentType};base64,${base64}`;
+			// } catch (error) {
+			// 	// this.logger.debug(`TalentsController findAll:  ${error}`);
+			// }
 		}
 		return talentsWithPrice;
 	}
@@ -118,12 +118,12 @@ export class TalentsController {
 				? (talent.price = order[0].price)
 				: (talent.price = -1);
 		}
-		const s3Avatar = await this.s3Service.s3GetObject(
-			`avatar/${talent.image}`,
-			'media-front',
-		);
-		const base64 = s3Avatar.Body.toString('base64');
-		talent.image = `data:${s3Avatar.ContentType};base64,${base64}`;
+		// const s3Avatar = await this.s3Service.s3GetObject(
+		// 	`avatar/${talent.image}`,
+		// 	'media-front',
+		// );
+		// const base64 = s3Avatar.Body.toString('base64');
+		// talent.image = `data:${s3Avatar.ContentType};base64,${base64}`;
 		return talent;
 	}
 	@Public()
@@ -156,16 +156,16 @@ export class TalentsController {
 				const UpdatePriceTalent = await this.update(id, newPrice);
 				UpdatePriceTalent;
 			}
-		try {
-			const s3Avatar = await this.s3Service.s3GetObject(
-				`avatar/${talent.image}`,
-				'media-front',
-			);
-			const base64 = s3Avatar.Body.toString('base64');
-			talent.image = `data:${s3Avatar.ContentType};base64,${base64}`;
-		} catch (error) {
-			// this.logger.debug(`TalentsController findOne:  ${error}`);
-		}
+		// try {
+		// 	const s3Avatar = await this.s3Service.s3GetObject(
+		// 		`avatar/${talent.image}`,
+		// 		'media-front',
+		// 	);
+		// 	const base64 = s3Avatar.Body.toString('base64');
+		// 	talent.image = `data:${s3Avatar.ContentType};base64,${base64}`;
+		// } catch (error) {
+		// 	// this.logger.debug(`TalentsController findOne:  ${error}`);
+		// }
 		const prices = await this.tokenPriceHistoryService.findAllByTalent(id);
 		
 		

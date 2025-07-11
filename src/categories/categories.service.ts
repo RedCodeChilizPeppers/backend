@@ -33,7 +33,7 @@ export class CategoriesService {
 
 	async remove(id: string) {
 		const deletedCat = await this.categoriesModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deletedCat;
 	}

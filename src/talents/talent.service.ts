@@ -54,13 +54,13 @@ export class TalentsService {
 
 	async remove(id: string) {
 		const deletedTalent = await this.talentModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deletedTalent;
 	}
 
 	countAll() {
-		return this.talentModel.find().count().exec();
+		return this.talentModel.find().countDocuments().exec();
 	}
 	
 	async updateNumberParticipant(id: string, numberParticipant: number) {
@@ -95,6 +95,6 @@ export class TalentsService {
 	}
 	
 	countNumberParticipants() {
-		return this.talentModel.find().count().exec();
+		return this.talentModel.find().countDocuments().exec();
 	}
 }

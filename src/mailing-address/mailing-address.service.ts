@@ -39,7 +39,7 @@ export class MailingAddressService {
 
 	async remove(id: string) {
 		const deletedLang = await this.mailingAddressModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deletedLang;
 	}

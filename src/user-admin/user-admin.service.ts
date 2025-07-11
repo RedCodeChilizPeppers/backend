@@ -38,7 +38,7 @@ export class UserAdminService {
 
 	async remove(id: string) {
 		const deletedAdmin = await this.userAdminModel
-			.findByIdAndRemove({ _id: id })
+			.findOneAndDelete({ _id: id })
 			.exec();
 		return deletedAdmin;
 	}
